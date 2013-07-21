@@ -1,0 +1,26 @@
+
+MathCraftAddOn` demo
+In[10]:= Quit
+In[4]:= $MathCraftAddOnPath=ToFileName[{ParentDirectory[NotebookDirectory[]],"MathCraftAddOn"}];
+PrependTo[$Path,$MathCraftAddOnPath];
+In[3]:= <<MathCraftAddOn`
+Timing`
+Timing[]
+In[6]:= Timing[(Pause[.1];Sin[3.14]),AbsoluteTiming,100,1000]
+During evaluation of In[6]:= normalizedTimeLimit->100
+During evaluation of In[6]:= ran 1 iterations run for a total time of 0.100 seconds
+During evaluation of In[6]:= ran 10 iterations run for a total time of 1.00 seconds
+During evaluation of In[6]:= ran 100 iterations run for a total time of 10.0 seconds
+During evaluation of In[6]:= ran 100 iterations run for a total time of 10.0 seconds
+Out[6]= {0.10021660,0.00159265}
+In[8]:= Power[10,#]&/@Range[0,Floor[Log[10,1000]]]
+Out[8]= {1,10,100,1000}
+In[9]:= Timing[(Pause[.1];Sin[3.14]),AbsoluteTiming,10,50]
+During evaluation of In[9]:= normalizedTimeLimit->10
+During evaluation of In[9]:= ran 1 iterations run for a total time of 0.100 seconds
+During evaluation of In[9]:= ran 1 iterations run for a total time of 0.100 seconds
+Out[9]= {0.100179,0.00159265}
+Find defined symbols
+In[9]:= Names["MathCraftAddOn`*"]
+Out[9]= {}
+Temp
