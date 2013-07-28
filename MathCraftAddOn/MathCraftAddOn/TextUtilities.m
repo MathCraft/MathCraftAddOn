@@ -16,14 +16,15 @@ Begin["`Private`"]
 Clear[DiffList];
 DiffList[list1_List, list2_List] := Module[
 	{tmp},
-	Flatten[#, 1]&@
-	Switch[
-		#,
-		{{}, _List}, {"", #}& /@ Last[#],
-		{_List, {}}, {#, ""}& /@ First[#],
-		{_List, _List}, tmp = Max[Length/@#]; Transpose@(PadRight[#,tmp,""]& /@ #),
-		_List, {#, #}& /@ #
-    ]& /@ SequenceAlignment[list1,list2]
+	Flatten[#, 1] & @ (
+		Switch[
+			#,
+			{{}, _List}, {"", #}& /@ Last[#],
+			{_List, {}}, {#, ""}& /@ First[#],
+			{_List, _List}, tmp = Max[Length/@#]; Transpose@(PadRight[#,tmp,""]& /@ #),
+			_List, {#, #}& /@ #
+		]& /@ SequenceAlignment[list1,list2]
+    )
 ]
 
 
