@@ -28,5 +28,7 @@ syntax: glob
 .CVS
 .hg*
 
+# R
+.Rhistory
 
 # use regexp syntax
