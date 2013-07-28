@@ -1,4 +1,5 @@
 MathCraftAddOn` demo
+
 $MathCraftAddOnPath=ToFileName[{ParentDirectory[NotebookDirectory[]],"MathCraftAddOn"}];
 PrependTo[$Path,$MathCraftAddOnPath];
 <<MathCraftAddOn`
