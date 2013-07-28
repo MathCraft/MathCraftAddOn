@@ -9,7 +9,7 @@
 BeginPackage["MathCraftAddOn`TextUtilities`"]
 
 mcTextDiff::usage = "mcTextDiff[oldText, newText] return a gird of formatted diff result of two texts"
-mcReplaceUnicode::usage = "mcReplaceUnicode[text] store the encode for unicode which was broken by Import[..]"
+mcReplaceUnicode::usage = "mcReplaceUnicode[text] restore the encode for unicode which was broken by Import[..]"
 
 Begin["`Private`"]
 
@@ -35,13 +35,17 @@ mcReplaceUnicode[s_String]:=StringReplace[s,RegularExpression["(?i)\\\\:([0-9a-f
 
 
 (* Input should be a list which includes two strings, e.g: {"xxafd", "aferaw"} *)
+(*
+   If you want change the background of the diff result, simply configure the 
+   option of AddStyle. more complex formatting require modification of AddStyle
+*)
 Clear[AddStyle];
 Options[AddStyle] = 
     {
 	"Style" -> {
                      LightGreen,
                      LightRed,
-	                {LightPurple, LightBlue}
+	             {LightPurple, LightBlue}
                    }
     };
 
@@ -69,7 +73,7 @@ AddStyle[list_List, OptionsPattern[]]:=
 
 
 Clear[mcTextDiff];
-Options[mcTextDiff] = {"RestoreUnicode" -> True}
+Options[mcTextDiff] = {}
 mcTextDiff[oldText_String,newText_String, OptionsPattern[]]:=
     Module[
 	{tmp,cmpStrings},
