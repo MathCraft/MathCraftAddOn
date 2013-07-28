@@ -79,25 +79,34 @@ AddStyle[list_List, OptionsPattern[]] := Module[
 
 
 (*****************************************************************************)
+
+
 (* ::Section:: *)
+(**)
+
 
 (*markdown!
 
 *)
 Clear[mcTextDiff];
-Options[mcTextDiff] = {}
-mcTextDiff[oldText_String, newText_String, OptionsPattern[]] := Module[
-	{tmp, cmpStrings},
+Options[mcTextDiff] = {"LineNumberQ" -> True}
+mcTextDiff[oldText_String,newText_String, OptionsPattern[]]:=
+    Module[
+	{tmp,cmpStrings},
 	tmp = DiffList[StringSplit[oldText,"\n"], StringSplit[newText,"\n"]];
-	cmpStrings[s1_,s2_] := Replace[SequenceAlignment[s1,s2], a_String :> {a,a}, 1];
+	cmpStrings[s1_,s2_] := Replace[SequenceAlignment[s1,s2],a_String:>{a,a},1];
 	tmp = Composition[
-		With[{rowIndex = {Item[#, Alignment -> Center]} & /@ Range[Length[#]]}, Join[rowIndex, #, rowIndex, 2]]&,
-		(Row /@ Transpose[#])& /@ #&,
-        (AddStyle /@ #&) /@ #&,
-        (cmpStrings[First[#], Last[#]]& /@ #)&
-    ][tmp];
-	Grid[tmp, ItemSize -> Fit, Alignment -> Left, Dividers -> All, FrameStyle -> LightGray]
-]
+	         (Row /@ Transpose[#])& /@ #&,
+	         (AddStyle /@ #&) /@ #&,
+	         (cmpStrings[First[#], Last[#]]& /@ #)&
+	      ][tmp];
+	(* maybe need to add line number*)
+	If[
+		OptionValue["LineNumberQ"],
+		tmp = Transpose@{Range[Length[tmp]],Sequence@@Transpose[tmp], Range[Length[tmp]]}
+	];
+	Grid[tmp, ItemSize->Fit, Alignment->Left, Frame->All, FrameStyle->LightGray]
+    ]
 
 End[]
 
