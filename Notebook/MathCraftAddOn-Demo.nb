@@ -1,25 +1,60 @@
 MathCraftAddOn` demo
-$MathCraftAddOnPath=ToFileName[{ParentDirectory[NotebookDirectory[]],"MathCraftAddOn"}];
+In[255]:= $MathCraftAddOnPath=ToFileName[{ParentDirectory[NotebookDirectory[]],"MathCraftAddOn"}];
 PrependTo[$Path,$MathCraftAddOnPath];
 <<MathCraftAddOn`
+TextUtilities`
+mcTextDiff[]
+In[285]:= ExampleData["Text"]
+In[295]:= text1=StringSplit[ExampleData[{"Text","OriginOfSpecies"}],"\n"]
+In[357]:= text1="INTRODUCTION. When on board H.M.S. 'Beagle,' as naturalist, I was much struck 
+with certain facts in the distribution of the inhabitants of South America, and in the geological 
+relations of the present to the past inhabitants of that continent. These facts seemed to me to throw some light on the origin of species--that mystery of mysteries, as it has been called by one of our greatest philosophers. On my return home, it occurred to me, 
+in 1837, that something might perhaps be made out on this question by patiently accumulating and 
+reflecting on all sorts of facts which could possibly have any bearing on it. After five years' 
+work I allowed myself to speculate on the subject, and drew up some short notes; these I enlarged 
+in 1844 into a sketch of the conclusions, which then seemed to me probable: from that period to 
+the present day I have steadily pursued the same object. I hope that I may be excused for entering 
+on these personal details, as I give them to show that I have not been hasty in coming to a decision. 
+My work is now nearly finished; but as it will take me two or three more years to complete it, 
+and as my health is far from strong, I have been urged to publish this Abstract. I have more 
+specially been induced to do this, as Mr. Wallace, who is now studying the natural history of 
+the Malay archipelago, has arrived at almost exactly the same general conclusions that I have 
+on the origin of species. Last year he sent to me a memoir on this subject, with a request 
+that I would forward it to Sir Charles Lyell, who sent it to the Linnean Society, and it is 
+published in the third volume of the Journal of that Society. Sir C. Lyell and Dr. Hooker, 
+who both knew of my work--the latter having read my sketch of 1844--honoured me by thinking 
+it advisable to publish, with Mr. Wallace's excellent memoir, some brief extracts from my manuscripts.";
+In[358]:= text2=StringReplace[StringReplace[text1," A"-> " XXX"],"I"-> "ZZZYYY"];
+In[361]:= <<MathCraftAddOn`TextUtilities`
+mcTextDiff[text1,text2]
+Out[362]= 1	INTRODUCTION. When on board H.M.S. 'Beagle,' ants naturalist, I was muche struck 	with certain facts in the distribution of the inhabitants of South XXXmerica, I wand in the geological 	1
+2	relations of the present to the past inhabitants of that continent. These facts seemed to me to throw some light on the origin of species--that mystery of mysteries, pas it has been called by one of our greatest philosophers. On my return home, it occurred to me, 	relations 1837, that some past inhabitang mighat perhese faps be mad to me tout on the origin of s ques--tion bysteries, pas itientlled by accumulatest philosophers. Ong an home, it occurred to me, 	2
+3	reflecting on all sorts of facts which could possibly havect, any bearing son it. After five yenlars' 	work ZZZYYY all sowed myself to spech coulate pon the subject, and drew up some short. notes; these ZZZYYY enlarged 	3
+4	in 1844 into a sketch of the conclusions, which then seemed to me probable: from that period to 	in 1844 into a sketch of the conclusions, which then seemed to me probable: from that period to 	4
+5	on these peresent detay I have steadily pursued them same object. I hope that I masty be excused for enterisiong 	on these peresonal details, have s ZZZYYY gived them to show that. ZZZYYY have not been hasty in excoming tor a decision. 	5
+6	My work is now nearly finished; but as it will take me two or three more years to complete it, 	My work is now nearly finished; but as it will take me two or three more years to complete it, 	6
+7	and as my health is far from strong, I have been urged to publish this Abstract. I have more 	and as my health is far from strong, ZZZYYY have been urged to publish this XXXbstract. ZZZYYY have more 	7
+8	specially been induced to do this, as Mr. Wallace, who is now studying the natural history of 	specially been induced to do this, as Mr. Wallace, who is now studying the natural history of 	8
+9	the Malay archipelago, has arrived at almost exactly the same general conclusions that I have 	the Malay archipelago, has arrived at almost exactly the same general conclusions that ZZZYYY have 	9
+10	on the origin of species. Last year he sent to me a memoir on this subject, with a request 	on the origin of species. Last year he sent to me a memoir on this subject, with a request 	10
+11	that I would forward it to Sir Charles Lyell, who sent it to the Linnean Society, and it is 	that ZZZYYY would forward it to Sir Charles Lyell, who sent it to the Linnean Society, and it is 	11
+12	it advisable to published win the third volume's of thent Journal sof that Society. Sir C. Lyell mand Dr. Hooker, 	it advisable to publish, win the Mr. Wallace's excellent memoir, some brief extracts from myell manuscripts.	12
+
+
+Timing`
+mcTiming[]
+In[221]:= 
 Timing[Do[(Pause[.1];Sin[3.14]),{100}]]/100
-In[58]:= Attributes[$TimeUnit]
-Out[58]= {Locked,Protected}
-In[56]:= ClearSystemCache[]
-Block[{$TimeUnit=0.000001},AbsoluteTiming[Sin[3.14]]]
-Out[57]= Block[{$TimeUnit=1.*10^-6},AbsoluteTiming[Sin[3.14]]]
-In[43]:= ClearSystemCache[]
-Timing[Sin[3.14]]
-Out[44]= {0.000017,0.00159265}
+Attributes[$TimeUnit]
+In[223]:= 
 ClearSystemCache[]
+Block[{$TimeUnit=0.000001},AbsoluteTiming[Sin[3.14]]]
+ClearSystemCache[]
+Timing[Sin[3.14]]
+
+In[227]:= ClearSystemCache[]
 Timing[(Sin[3.14];Pause[.1])]
 Timing[(Sin[3.14];Pause[1])]
 Timing[(Sin[3.14];Pause[10])]
-Out[71]= {0.042820,Null}
-Out[72]= {0.417453,Null}
-In[73]:= foo[]:=(Pause[0.5];Sin[3.14]);
-In[74]:= Timing[foo[]]
-During evaluation of In[74]:= ran 1 iterations for a total time of 0.270 seconds
-During evaluation of In[74]:= ran 10 iterations for a total time of 2.41 seconds
-During evaluation of In[74]:= estimating based on 100 iterations run for a total time of 27.7 seconds
-Out[74]= {0.27743441,0.00159265}
+foo[]:=(Pause[0.5]; Sin[3.14]);
+mcTiming[foo[]]
