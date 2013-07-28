@@ -7,30 +7,30 @@
 (*****************************************************************************)
 BeginPackage["MathCraftAddOn`Timing`"]
 
-\[ScriptM]Timing::usage = "\[ScriptM]Times[program, timingFunc, timingLimit, iterationLimit] "
+mcTiming::usage = "mcTimes[program, timingFunc, timingLimit, iterationLimit] "
 
 Begin["`Private`"]
 
 
 (*****************************************************************************)
 (* ::Section:: *)
-(* \[ScriptM]Timing *)
+(* mcTiming *)
 (*
 
 todo:
 * don't waste evaluations
 *)
 
-ClearAll[\[ScriptM]Timing]
+ClearAll[mcTiming]
 
-Attributes[\[ScriptM]Timing] = {HoldAll};
+Attributes[mcTiming] = {HoldAll};
 
-Options[\[ScriptM]Timing] = {
+Options[mcTiming] = {
 	"ClearSystemCacheQ" -> True
 
 };
 
-\[ScriptM]Timing[program_, timingFunc_: Timing, timingLimit_: 60, iterationLimit_: 10^5, OptionsPattern[]] := Module[
+mcTiming[program_, timingFunc_: Timing, timingLimit_: 60, iterationLimit_: 10^5, OptionsPattern[]] := Module[
     {
         totalTime = 0,
         totalIterationLog = 0,
