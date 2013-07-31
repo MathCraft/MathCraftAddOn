@@ -8,6 +8,8 @@
 BeginPackage["MathCraftAddOn`List`"]
 Needs["MathCraftAddOn`System`"]
 
+mcLongestCommonContinuousSequence::usage = "mcLongestCommonContinuousSequence[s1, s2] find the longest common continuous sequence of two strings or two lists."
+
 mcMatrixDiagonals::usage = "mcMatrixDiagonals[matrix, direction] gives the diagnols of matrix, with direction 1 meaning the NE-SW diagnols and -1 the NW-SE ones."
 
 
@@ -48,6 +50,15 @@ mcMatrixDiagonals[matrix_, direction_:1]:= With[
 		Dimensions
 	][m]
 ]
+
+
+(*****************************************************************************)
+(* ::Section:: *)
+(* LongestCommonSequence *)
+
+mcLongestCommonContinuousSequence[s1_String, s2_String] := Last[SortBy[GatherBy[Cases[SequenceAlignment[s1, s2], _String], StringLength], StringLength[#[[1]]]&]];
+
+mcLongestCommonContinuousSequence[l1_List, l2_List] := Last[SortBy[GatherBy[DeleteCases[SequenceAlignment[l1, l2], {_List, _List}], Length], Length[#[[1]]]&]];
 
 
 End[]

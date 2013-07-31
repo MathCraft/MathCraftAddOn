@@ -4,6 +4,7 @@ BeginPackage["MathCraftAddOn`",
 {
     "MathCraftAddOn`List`",
     "MathCraftAddOn`TextUtilities`",
+    "MathCraftAddOn`String`",
     "MathCraftAddOn`Timing`"
 }
 ]
