@@ -18,7 +18,6 @@ mcMatrixDiagonals::usage = "mcMatrixDiagonals[matrix, direction] gives the diagn
 Begin["`Private`"]
 
 
-
 (*****************************************************************************)
 (* ::Section:: *)
 (* Region Title *)
