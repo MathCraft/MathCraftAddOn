@@ -26,28 +26,28 @@ Begin["`Private`"]
 
 ## Examples
 
-	m = Table[RandomInteger[], {5}, {5}];
-	m // MatrixForm
-	MatrixDiagonals[m]
+    m = Table[RandomInteger[], {5}, {5}];
+    m // MatrixForm
+    MatrixDiagonals[m]
 *)
 Clear[mcMatrixDiagonals];
 mcMatrixDiagonals[matrix_, direction_:1]:= With[
-	{m = Switch[direction, -1, Reverse/@ matrix, _, matrix]},
-	Composition[
-		Map[Part[m,##]& @@ # & @ # &, #, {2}]&,
-		Join@@#&,
-		{Most[Reverse[#]], Map[Reverse,#,{2}]}&,
-		Table[
-			DeleteCases[
-				Transpose[{Range[#],Range[#]+i}],
-				{___,x_/;x>#,___}
-			],
-			{i,Range[0,#-1]}
-		]&,
-		Replace[#,{{d_Integer}:> d,_-> Return[$Failed]}]&,
-		Union,
-		Dimensions
-	][m]
+    {m = Switch[direction, -1, Reverse/@ matrix, _, matrix]},
+    Composition[
+        Map[Part[m,##]& @@ # & @ # &, #, {2}]&,
+        Join@@#&,
+        {If[Length[#]>0, Most[Reverse[#]], #], Map[Reverse,#,{2}]}&,
+        Table[
+            DeleteCases[
+                Transpose[{Range[#],Range[#]+i}],
+                {___,x_/;x>#,___}
+            ],
+            {i,Range[0,#-1]}
+        ]&,
+        Replace[#,{{d_Integer}:> d,_-> Return[$Failed]}]&,
+        Union,
+        Dimensions
+    ][m]
 ]
 
 
