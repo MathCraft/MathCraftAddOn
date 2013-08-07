@@ -31,4 +31,6 @@ syntax: glob
 # R
 .Rhistory
 
+# Eclipse configuration
+.settings
 # use regexp syntax
