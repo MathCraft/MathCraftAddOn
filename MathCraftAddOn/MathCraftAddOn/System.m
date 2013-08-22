@@ -2,12 +2,17 @@
 
 BeginPackage["MathCraftAddOn`System`"]
 
-mcFalseQ::usage = "mcFalseQ[args] is a shorthand of Not[TrueQ[args]]"
+mcFalseQ::usage = "mengFalseQ[expr] yields True if expr is False, and yields False otherwise.  mcFalseQ[args] is NOT equivalent to Not[TrueQ[args]] for all args."
 
 Begin["`Private`"]
 
-mcFalseQ[args___] := !TrueQ[args];
+Clear[mcFalseQ]
 
+mcFalseQ[False] = True;
+
+mcFalseQ[True] = False;
+
+mcFalseQ[_] = False;
 
 End[]
 EndPackage[]
