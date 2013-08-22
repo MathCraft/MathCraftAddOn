@@ -31,7 +31,7 @@ Begin["`Private`"]
     MatrixDiagonals[m]
 *)
 Clear[mcMatrixDiagonals];
-mcMatrixDiagonals[matrix_, direction_:1]:= With[
+mcMatrixDiagonals[matrix_?(MatchQ[Dimensions[#], {_Integer, _Integer}]&), direction_:1]:= With[
     {m = Switch[direction, -1, Reverse/@ matrix, _, matrix]},
     Composition[
         Map[Part[m,##]& @@ # & @ # &, #, {2}]&,
