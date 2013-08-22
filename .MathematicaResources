@@ -3,7 +3,6 @@ Resources[
     Sources[
         Directory["~"]
     ],
-    ExecutionBuildCommand["<<MathCraftAddOn`"],
     Paclet[
         FunctionPaclet[False]
     ]
