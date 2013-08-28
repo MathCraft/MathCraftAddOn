@@ -1,36 +1,34 @@
 (*! markdown
-This package will be designed as an OOP framework for Mathematica
+    This package will be designed as an OOP framework for Mathematica
+    by Jack mathcraft.jack@gmail.com
 *)
 
 (*! markdown
 ## Example:
+    ClassDeclare[
+        A,
+        width,
+        length
+    ];
 
- ClassDeclare[
-    Person,
-    Age,
-    Name,
-    SayHi[s_String]
- ]
+    ClassDefine[
+        A,
+        width = 10,
+        length = 100
+    ];
 
- ClassDefine[
-    Person,
-    Age = 10,
-    Name = "Jack"
- ]
+    ClassDeclare[
+        B <- A,
+        area[]
+    ];
 
+    ClassDefine[
+        B,
+        area[] := width * length
+    ]
 
- ClassDefine[
-    Person,
-    SayHi[s_String] := "Hello " <> s <> Name
- ]
-
- person1 = ClassNew[Person];
- person1.Name
- person1.SayHi["Dan"]
-
- person2=ClassNew[Person];
- person2.Name="MC";
- person2.SayHi["Jack"]
+    // test
+    B.area[]
 *)
 
 
@@ -48,7 +46,7 @@ Dot[a_?ClassQ, b_] := a[b];
 Protect[Dot]
 
 
-
+Class::SyntaxError = "Syntax Error in `1`"
 Begin["`Private`"] (* Begin Private Context *)
 
 (*
@@ -116,21 +114,26 @@ ClassDeclare[
 ]
 *)
 
+(*$Object is an empty class*)
+$Object = Null;
+Clear[$Object];
 
 ClearAll[ClassDeclare];
 Attributes[ClassDeclare] = {HoldAll};
-ClassDeclare[className_,fields___] :=
-    Module[ {dataSet},
+ClassDeclare[className_Symbol,fields___] := ClassDeclare[className <- $Object, fields];
+ClassDeclare[className_Symbol <- baseClass_Symbol, fields___] :=
+    Module[
+        {dataSet},
         ClearAll[className];
+        ClassInheritFrom[className, baseClass];
         dataSet = (# -> Hold[className[#]])& /@ Select[List@fields, (Head[#] === Symbol &)];
+        (* repeated (compare with inherit members) will be overwrite*)
         (className[#] :=
              Null)&/@(List@fields);
-        AppendTo[DownValues[className], HoldPattern[className[DataSet]] :> dataSet];
+        AppendTo[DownValues[className], HoldPattern[className[DataSet]] -> dataSet];
         (*set a tag to specify that className is a class*)
         className[$Tag] := $Class;
     ];
-
-
 (*============================================================================
 *)
 ClearAll[ClassNew];
@@ -142,6 +145,20 @@ ClassNew[className_?ClassQ]:=
         Return[obj]
     ]
 
+
+(* =========================================================
+   for now, ClassInheritFrom will only be called inside ClassDeclare
+*)
+ClearAll[ClassInheritFrom]
+ClassInheritFrom[className_, baseClass_] :=
+    Module[
+        {},
+        AppendTo[
+            DownValues[className],
+            ReplaceAll[DownValues[baseClass], baseClass[a___] :> className[a]]
+        ];
+        DownValues[className] = DeleteDuplicates@DownValues[className];
+    ]
 
 
 End[] (* End Private Context *)
