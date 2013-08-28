@@ -3,7 +3,7 @@ This package will be designed as an OOP framework for Mathematica
 *)
 
 (*! markdown
- example:
+## Example:
 
  ClassDeclare[
     Person,
@@ -36,24 +36,41 @@ This package will be designed as an OOP framework for Mathematica
 
 (* Mathematica Package *)
 
-BeginPackage["MathCraftAddOn`OOPFramework`", { "Notation`"}]
+BeginPackage["MathCraftAddOn`OOPFramework`"(*, { "Notation`"}*)]
 (* Exported symbols added here with SymbolName::usage *)
 ClassDefine::usage = ""
 ClassDeclare::usage = ""
 ClassNew::usage = ""
+ClassQ::usage = ""
+(*define the operator . in the kernel level*)
+Unprotect[Dot];
+Dot[a_?ClassQ, b_] := a[b];
+Protect[Dot]
+
+
+
 Begin["`Private`"] (* Begin Private Context *)
 
 (*
     set notation for member function call
+    This is not a good idea, since it only works
+    under front end
 *)
 (*Notation[object_ . member_ \[DoubleLongRightArrow] object_[member_]]*)
-Notation[ParsedBoxWrapper[
+(*Notation[ParsedBoxWrapper[
 RowBox[{"object_", " ", ".", " ",
      "member_"}]] \[DoubleLongRightArrow] ParsedBoxWrapper[
 RowBox[{"object_", "[", "member_", "]"}]]]
-
+*)
 (*================================================================================
 *)
+$Class
+$Tag
+(* ClassQ will return Ture for any class/object created by ClassDeclare
+    or ClassNew
+*)
+ClassQ[a_] := a[$Tag] === $Class;
+
 ClearAll[ClassDefine];
 Attributes[ClassDefine] = {HoldAllComplete};
 ClassDefine[className_,definition_] :=
@@ -76,8 +93,9 @@ ClassDefine[className_,definition_] :=
         rhs = ReplaceAll[rhs, className[DataSet]];
         rhs = ReplaceAll[rhs, Verbatim[Hold][className[a__]] :> className[a]];
         className[First@lhs]=.;
-        {Hold[className[First@lhs]],rhs}/.{Verbatim[Hold][a_],Verbatim[Hold][b_]}:>Hold[a :=
-                                                                                            b]/.a_:>First[a];
+        {Hold[className[First@lhs]],rhs}/.
+            {Verbatim[Hold][a_],Verbatim[Hold][b_]}:>Hold[a := b]
+            /.a_:>First[a];
     ];
 (*support multi-definition in one ClassDefine[..]*)
 ClassDefine[className_, definitions__] :=
@@ -108,20 +126,24 @@ ClassDeclare[className_,fields___] :=
         (className[#] :=
              Null)&/@(List@fields);
         AppendTo[DownValues[className], HoldPattern[className[DataSet]] :> dataSet];
+        (*set a tag to specify that className is a class*)
+        className[$Tag] := $Class;
     ];
 
 
 (*============================================================================
 *)
 ClearAll[ClassNew];
-ClassNew[className_]:=
+ClassNew[className_?ClassQ]:=
     Module[
         {obj},
         DownValues[obj] = ReplaceAll[DownValues[className], className[a___] :> obj[a]];
+        (*UpValues[obj] = ReplaceAll[UpValues[className], className[a___] :> obj[a]];*)
         Return[obj]
     ]
+
+
 
 End[] (* End Private Context *)
 
 EndPackage[]
-
