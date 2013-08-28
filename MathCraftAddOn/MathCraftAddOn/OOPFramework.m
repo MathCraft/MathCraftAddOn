@@ -14,13 +14,10 @@ This package will be designed as an OOP framework for Mathematica
 
  ClassDefine[
     Person,
-    Age = 10
- ]
-
- ClassDefine[
-    Person,
+    Age = 10,
     Name = "Jack"
  ]
+
 
  ClassDefine[
     Person,
@@ -82,6 +79,13 @@ ClassDefine[className_,definition_] :=
         {Hold[className[First@lhs]],rhs}/.{Verbatim[Hold][a_],Verbatim[Hold][b_]}:>Hold[a :=
                                                                                             b]/.a_:>First[a];
     ];
+(*support multi-definition in one ClassDefine[..]*)
+ClassDefine[className_, definitions__] :=
+    Module[
+        {tmp},
+        tmp = Hold[ClassDefine[className, #]]& /@ (List@@Hold/@ Hold[definitions]);
+        Replace[tmp, Verbatim[Hold][a_[b_, Verbatim[Hold][c___]]] :> a[b,c],1];
+    ]
 
 
 (* ================================================================================
@@ -120,3 +124,4 @@ ClassNew[className_]:=
 End[] (* End Private Context *)
 
 EndPackage[]
+
