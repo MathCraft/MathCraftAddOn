@@ -121,12 +121,17 @@ Clear[$Object];
 ClearAll[ClassDeclare];
 Attributes[ClassDeclare] = {HoldAll};
 ClassDeclare[className_Symbol,fields___] := ClassDeclare[className <- $Object, fields];
-ClassDeclare[className_Symbol <- baseClass_Symbol, fields___] :=
+ClassDeclare[className_Symbol <- baseClass_, fields___] :=
     Module[
         {dataSet},
+        If[
+            !MatchQ[baseClass, _Symbol|_List],
+            Message[Class::SyntaxError, "ClassDeclare"];
+            Return[]
+        ];
         ClearAll[className];
         ClassInheritFrom[className, baseClass];
-        dataSet = (# -> Hold[className[#]])& /@ Select[List@fields, (Head[#] === Symbol &)];
+        dataSet = (# -> Hold[className[#]])& /@ Select[List@fields,(Head[#] === Symbol) &];
         (* repeated (compare with inherit members) will be overwrite*)
         (className[#] :=
              Null)&/@(List@fields);
@@ -160,6 +165,8 @@ ClassInheritFrom[className_, baseClass_] :=
         DownValues[className] = DeleteDuplicates@DownValues[className];
     ]
 
+(* support multi-inheritance*)
+ClassInheritFrom[className_, baseClasses_List] := ClassInheritFrom[className, #]& /@ baseClasses;
 
 End[] (* End Private Context *)
 
