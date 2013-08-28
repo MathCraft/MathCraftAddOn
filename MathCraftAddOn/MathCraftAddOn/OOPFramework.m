@@ -2,9 +2,39 @@
 This package will be designed as an OOP framework for Mathematica
 *)
 
+(*! markdown
+ example:
+ 
+ ClassDeClare[
+    Person,
+    Age,
+    Name,
+    SayHi[s_String]
+ ]
+
+ ClassDefine[
+    Person,
+    Age = 10
+ ]
+
+ ClassDefine[
+    Person,
+    Name = "Jack"
+ ]
+
+ ClassDefine[
+    Person,
+    SayHi[s_String] := "Hello " <> s
+ ]
+
+ Person.Name
+ Person.SayHi["Dan"]
+*)
+
+
 (* Mathematica Package *)
 
-BeginPackage["MathCraft`OOPFramework`", { "Notation`"}]
+BeginPackage["MathCraftAddOn`OOPFramework`", { "Notation`"}]
 (* Exported symbols added here with SymbolName::usage *)
 ClassDefine::usage = ""
 ClassDeclare::usage = ""
