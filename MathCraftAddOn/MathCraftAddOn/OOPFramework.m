@@ -51,7 +51,8 @@ RowBox[{"object_", " ", ".", " ",
      "member_"}]] \[DoubleLongRightArrow] ParsedBoxWrapper[
 RowBox[{"object_", "[", "member_", "]"}]]]
 
-
+(*================================================================================
+*)
 ClearAll[ClassDefine];
 Attributes[ClassDefine] = {HoldAllComplete};
 ClassDefine[className_,definition_] :=
@@ -70,20 +71,40 @@ ClassDefine[className_,definition_] :=
                 (lhs = Replace[def,Verbatim[Hold][Verbatim[Set][l_,r_]]:>Hold[l]];
                 rhs = Replace[def,Verbatim[Hold][Verbatim[Set][l_,r_]]:>Hold[r]])
         ];
+        (* should replace member data as a downvalue of the class*)
+        rhs = ReplaceAll[rhs, className[DataSet]];
+        rhs = ReplaceAll[rhs, Verbatim[Hold][className[a__]] :> className[a]];
         className[First@lhs]=.;
         {Hold[className[First@lhs]],rhs}/.{Verbatim[Hold][a_],Verbatim[Hold][b_]}:>Hold[a :=
                                                                                             b]/.a_:>First[a];
     ];
 
+
+(* ================================================================================
+In ClassDeclare, a member without [..] should be considered as data rather than a function,
+it is necessary to distinguaish data from functions. e.g.
+ClassDeclare[
+    Person,
+    age,        ---> data
+    SayHi[s_String]     ---> function
+]
+*)
+
+
 ClearAll[ClassDeclare];
 Attributes[ClassDeclare] = {HoldAll};
 ClassDeclare[className_,fields___] :=
-    Module[ {},
+    Module[ {dataSet},
         ClearAll[className];
+        dataSet = (# -> Hold[className[#]])& /@ Select[List@fields, (Head[#] === Symbol &)];
         (className[#] :=
              Null)&/@(List@fields);
+        AppendTo[DownValues[className], HoldPattern[className[DataSet]] :> dataSet];
     ];
 
+
+(*============================================================================
+*)
 ClearAll[ClassNew];
 ClassNew[className_]:=
     Module[
@@ -95,4 +116,3 @@ ClassNew[className_]:=
 End[] (* End Private Context *)
 
 EndPackage[]
-
