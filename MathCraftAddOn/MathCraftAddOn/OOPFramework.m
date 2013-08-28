@@ -5,7 +5,7 @@ This package will be designed as an OOP framework for Mathematica
 (*! markdown
  example:
 
- ClassDeClare[
+ ClassDeclare[
     Person,
     Age,
     Name,
@@ -24,12 +24,16 @@ This package will be designed as an OOP framework for Mathematica
 
  ClassDefine[
     Person,
-    SayHi[s_String] := "Hello " <> s
+    SayHi[s_String] := "Hello " <> s <> Name
  ]
 
  person1 = ClassNew[Person];
  person1.Name
  person1.SayHi["Dan"]
+
+ person2=ClassNew[Person];
+ person2.Name="MC";
+ person2.SayHi["Jack"]
 *)
 
 
@@ -109,7 +113,7 @@ ClearAll[ClassNew];
 ClassNew[className_]:=
     Module[
         {obj},
-        DownValues[obj] = DownValues[className] /. Verbatim[HoldPattern][className[a___]] :> HoldPattern[obj[a]];
+        DownValues[obj] = ReplaceAll[DownValues[className], className[a___] :> obj[a]];
         Return[obj]
     ]
 
