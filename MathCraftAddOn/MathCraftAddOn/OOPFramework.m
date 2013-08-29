@@ -17,6 +17,7 @@
         length = 100
     ];
 
+    // B inherit from A
     ClassDeclare[
         B <- A,
         area[]
@@ -27,8 +28,9 @@
         area[] := width * length
     ]
 
-    // test
-    B.area[]
+    // now we have define A and B
+    b = ClassNew[B];
+    b.area[]
 *)
 
 
@@ -40,6 +42,7 @@ ClassDefine::usage = ""
 ClassDeclare::usage = ""
 ClassNew::usage = ""
 ClassQ::usage = ""
+seperateLhsRhs::usage = ""
 (*define the operator . in the kernel level*)
 Unprotect[Dot];
 Dot[a_?ClassQ, b_] := a[b];
@@ -118,12 +121,29 @@ ClassDeclare[
 $Object = Null;
 Clear[$Object];
 
+ClearAll[seperateLhsRhs];
+Attributes[seperateLhsRhs] = {HoldAllComplete};
+seperateLhsRhs[exp_] :=
+    Module[
+        {tmp = Hold[exp]},
+        tmp = tmp /.Verbatim[Hold][a_Hold] :> a;
+
+        Which[
+            !MatchQ[tmp, Verbatim[Hold][_Set | _SetDelayed]],
+               {First[tmp], Null},
+            MatchQ[tmp, Verbatim[Hold][_Set]],
+                Replace[tmp, Verbatim[Hold][Verbatim[Set][a_, b_]] :> {a, b}],
+            True,
+                Replace[tmp, Verbatim[Hold][Verbatim[SetDelayed][a_, b_]] :> {a, b}]
+        ]
+    ]
+
 ClearAll[ClassDeclare];
 Attributes[ClassDeclare] = {HoldAll};
 ClassDeclare[className_Symbol,fields___] := ClassDeclare[className <- $Object, fields];
 ClassDeclare[className_Symbol <- baseClass_, fields___] :=
     Module[
-        {dataSet},
+        {dataSet, tmp = List@@(Hold /@ Hold[fields]), tmp2},
         If[
             !MatchQ[baseClass, _Symbol|_List],
             Message[Class::SyntaxError, "ClassDeclare"];
@@ -131,13 +151,17 @@ ClassDeclare[className_Symbol <- baseClass_, fields___] :=
         ];
         ClearAll[className];
         ClassInheritFrom[className, baseClass];
-        dataSet = (# -> Hold[className[#]])& /@ Select[List@fields,(Head[#] === Symbol) &];
+        tmp2 = (First/@(seperateLhsRhs /@ tmp));
+        dataSet = (# -> Hold[className[#]])& /@ Select[tmp2,(Head[#] === Symbol) &];
         (* repeated (compare with inherit members) will be overwrite*)
         (className[#] :=
-             Null)&/@(List@fields);
+             Null)&/@ tmp2;
         AppendTo[DownValues[className], HoldPattern[className[DataSet]] -> dataSet];
         (*set a tag to specify that className is a class*)
         className[$Tag] := $Class;
+        (* now, let's support initialization *)
+        tmp2 = Hold[ClassDefine[className, #]]& /@ Select[tmp, !FreeQ[#, _Set | _SetDelayed]&];
+        tmp2 = Replace[tmp2,Verbatim[Hold][Verbatim[ClassDefine][a_,Verbatim[Hold][b_]]] :> ClassDefine[a,b],1];
     ];
 (*============================================================================
 *)
