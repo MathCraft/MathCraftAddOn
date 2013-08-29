@@ -15,7 +15,15 @@ Cell[BoxData[{
  RowBox[{
   RowBox[{"PrependTo", "[", 
    RowBox[{"$Path", ",", "$MathCraftAddOnPath"}], "]"}], ";"}], "\n", 
- RowBox[{"<<", "MathCraftAddOn`List`"}]}], "Input"],
+ RowBox[{"<<", "MathCraftAddOn`List`"}], "\[IndentingNewLine]", 
+ RowBox[{"<<", "MathCraftAddOn`System`"}]}], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["$UserBaseDirectory"], "Input"],
+
+Cell[BoxData["\<\"/Users/meng/Library/Mathematica\"\>"], "Output"]
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -752,7 +760,7 @@ Cell[BoxData[
        RowBox[{"l1", ",", "l2"}], "]"}], ",", 
       RowBox[{"{", "_", "}"}]}], "]"}], ",", "Length"}], "]"}], 
   "]"}]], "Input"]
-}, Closed]],
+}, Open  ]],
 
 Cell[CellGroupData[{
 
@@ -1028,7 +1036,7 @@ Cell[BoxData[
    "500000500000"}], "}"}]], "Output"]
 }, Open  ]]
 }, Open  ]]
-}, Open  ]],
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1349,15 +1357,166 @@ brief extracts from my manuscripts.\""},
    GridBoxItemSize->{"Columns" -> {{Fit}}, "Rows" -> {{Fit}}}],
   "Grid"]], "Output"]
 }, Open  ]]
-}, Closed]]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Temp", "Section"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"mengGrid", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"#", ",", 
+      RowBox[{"mcFalseQ", "[", "#", "]"}]}], "}"}], "&"}], "/@", 
+   RowBox[{"{", 
+    RowBox[{"False", ",", "True", ",", "\"\<foobar\>\""}], "}"}]}], 
+  "]"}]], "Input"],
+
+Cell[BoxData[
+ DynamicModuleBox[{meng`Shared`Private`sortcolumn$$ = 3, 
+  meng`Shared`Private`newdata$$ = {{1, 2, True, False}, {
+   2, 3, "foobar", False}, {3, 1, False, True}, {
+    Item[
+     Style["row", 
+      GrayLevel[0.5]], Background -> GrayLevel[0.85], 
+     Alignment -> {Center, Center}], 
+    Item[
+     Button[
+      Row[{"ID", " ", 
+        Invisible["\[UpArrow]"]}], meng`Shared`Private`sortcolumn$$ = 1, 
+      Appearance -> "Palette"], Background -> GrayLevel[0.85]], 
+    Item[
+     Button[
+      Row[{"col1", " ", 
+        Invisible["\[UpArrow]"]}], meng`Shared`Private`sortcolumn$$ = 2, 
+      Appearance -> "Palette"], Background -> GrayLevel[0.85]], 
+    Item[
+     Button[
+      Row[{"col2", " ", 
+        Style["\[DownArrow]", 
+         RGBColor[1, 0, 0]]}], 
+      meng`Shared`Private`sortcolumn$$ = -meng`Shared`Private`sortcolumn$$, 
+      Appearance -> "Palette"], Background -> GrayLevel[0.85]]}}, 
+  meng`Shared`Private`newheaders$$ = {
+   Item[
+    Style["row", 
+     GrayLevel[0.5]], Background -> GrayLevel[0.85], 
+    Alignment -> {Center, Center}], 
+   Item[
+    Button[
+     Row[{"ID", " ", 
+       Invisible["\[UpArrow]"]}], meng`Shared`Private`sortcolumn$$ = 1, 
+     Appearance -> "Palette"], Background -> GrayLevel[0.85]], 
+   Item[
+    Button[
+     Row[{"col1", " ", 
+       Invisible["\[UpArrow]"]}], meng`Shared`Private`sortcolumn$$ = 2, 
+     Appearance -> "Palette"], Background -> GrayLevel[0.85]], 
+   Item[
+    Button[
+     Row[{"col2", " ", 
+       Style["\[DownArrow]", 
+        RGBColor[1, 0, 0]]}], 
+     meng`Shared`Private`sortcolumn$$ = -meng`Shared`Private`sortcolumn$$, 
+     Appearance -> "Palette"], Background -> GrayLevel[0.85]]}, 
+  meng`Shared`Private`headers$$ = {"col1", "col2"}}, 
+  DynamicBox[ToBoxes[
+   meng`Shared`Private`newheaders$$ = 
+     MapIndexed[With[{meng`Shared`Private`i$ = Part[#2, 1]}, 
+        (Item[#, Background -> LightGray]& )[
+         If[
+         Abs[meng`Shared`Private`sortcolumn$$] === meng`Shared`Private`i$, 
+          Button[
+           If[meng`Shared`Private`sortcolumn$$ > 0, 
+            Replace[#, {Row[{
+                 Pattern[meng`Shared`Private`header, 
+                  Blank[]], " ", 
+                 Style[
+                  Alternatives["\[UpArrow]", "\[DownArrow]"], 
+                  Pattern[meng`Shared`Private`color, 
+                   Blank[]]]}] :> Row[{meng`Shared`Private`header, " ", 
+                 Style["\[DownArrow]", meng`Shared`Private`color]}], 
+              Pattern[meng`Shared`Private`a, 
+                Blank[]] :> Row[{meng`Shared`Private`a, " ", 
+                 Style["\[DownArrow]", Red]}]}], 
+            Replace[#, {Row[{
+                 Pattern[meng`Shared`Private`header, 
+                  Blank[]], " ", 
+                 Style[
+                  Alternatives["\[UpArrow]", "\[DownArrow]"], 
+                  Pattern[meng`Shared`Private`color, 
+                   Blank[]]]}] :> Row[{meng`Shared`Private`header, " ", 
+                 Style["\[UpArrow]", meng`Shared`Private`color]}], 
+              Pattern[meng`Shared`Private`a, 
+                Blank[]] :> Row[{meng`Shared`Private`a, " ", 
+                 Style["\[UpArrow]", Red]}]}]], 
+           meng`Shared`Private`sortcolumn$$ = -
+            meng`Shared`Private`sortcolumn$$, Appearance -> "Palette"], 
+          Button[
+           Row[{#, " ", 
+             Invisible["\[UpArrow]"]}], meng`Shared`Private`sortcolumn$$ = 
+           meng`Shared`Private`i$, Appearance -> "Palette"]]]]& , 
+       If[
+        OptionValue[meng`Shared`mengGrid, {}, "NumericUID"], 
+        Prepend[meng`Shared`Private`headers$$, 
+         If[meng`Shared`Private`sortcolumn$$ === 0, 
+          Row[{"ID", " ", 
+            Style["\[DownArrow]", Red]}], "ID"]], 
+        meng`Shared`Private`headers$$]]; If[
+      OptionValue[meng`Shared`mengGrid, {}, "InertNumericUID"], 
+      meng`Shared`Private`newheaders$$ = 
+      Prepend[meng`Shared`Private`newheaders$$, 
+        Item[
+         Style["row", Gray], Background -> LightGray, 
+         Alignment -> {Center, Center}]]]; 
+    meng`Shared`Private`newdata$$ = If[meng`Shared`Private`sortcolumn$$ =!= 0, 
+       Composition[
+       If[meng`Shared`Private`sortcolumn$$ < 0, Reverse, Identity][#]& , 
+        SortBy[#, OptionValue[meng`Shared`mengGrid, {}, "SortByFunction"][
+          Part[#, 
+           Abs[meng`Shared`Private`sortcolumn$$]]]& ]& , If[
+         OptionValue[meng`Shared`mengGrid, {}, "NumericUID"], 
+         MapIndexed[Prepend[#, 
+           Part[#2, 1]]& , #], #]& ][{{False, True}, {True, False}, {
+         "foobar", False}}], 
+       If[
+        OptionValue[meng`Shared`mengGrid, {}, "NumericUID"], 
+        MapIndexed[Prepend[#, 
+          Part[#2, 1]]& , {{False, True}, {True, False}, {
+          "foobar", False}}], {{False, True}, {True, False}, {
+         "foobar", False}}]]; If[
+      OptionValue[meng`Shared`mengGrid, {}, "InertNumericUID"], 
+      meng`Shared`Private`newdata$$ = MapIndexed[Prepend[#, 
+         Part[#2, 1]]& , meng`Shared`Private`newdata$$]]; If[
+      OptionValue[meng`Shared`mengGrid, {}, "RepeatedHeadersQ"], 
+      meng`Shared`Private`newdata$$ = 
+      meng`Shared`Private`addGridHeaders[
+       meng`Shared`Private`newdata$$, meng`Shared`Private`newheaders$$, 
+        OptionValue[meng`Shared`mengGrid, {}, "RepeatedHeadersOffset"]]]; Grid[
+      Prepend[
+      meng`Shared`Private`newdata$$, meng`Shared`Private`newheaders$$], 
+      meng`Shared`$mengGridOptionPattern, 
+      Apply[Sequence, 
+       FilterRules[{}, 
+        Part[
+         Options[Grid], All, 1]]]], StandardForm],
+   ImageSizeCache->{281., {78.15625, 86.84375}}],
+  DynamicModuleValues:>{}]], "Output"]
+}, Open  ]]
 }, Open  ]]
 }, Open  ]]
 },
 WindowSize->{1440, 852},
-WindowMargins->{{0, Automatic}, {Automatic, 0}},
+WindowMargins->{{-1567, Automatic}, {Automatic, -24}},
 ShowSelection->True,
 Magnification:>1.5 Inherited,
 FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
 2013)",
 StyleDefinitions->"Default.nb"
 ]
+
