@@ -81,6 +81,8 @@ ClassDeclare::usage = ""
 ClassNew::usage = ""
 ClassQ::usage = ""
 seperateLhsRhs::usage = ""
+getInternalName::usage = ""
+callMember::usage = ""
 (*define the operator . in the kernel level*)
 Unprotect[Dot];
 Dot[a_?((ObjectQ[#] || ClassQ[#])&), b_] := a[b];
@@ -190,6 +192,7 @@ ClassDeclare[className_Symbol <- baseClass_, fields___] :=
             Return[]
         ];
         ClearAll[className];
+        (*Attributes[className] = {HoldAll};*)
         ClassInheritFrom[className, baseClass];
         tmp2 = (First/@(seperateLhsRhs /@ tmp));
         dataSet = (# -> Hold[className[#]])& /@ (*tmp2*)Select[tmp2,(Head[#] === Symbol) &];
@@ -232,6 +235,30 @@ ClassInheritFrom[className_, baseClass_] :=
 
 (* support multi-inheritance*)
 ClassInheritFrom[className_, baseClasses_List] := ClassInheritFrom[className, #]& /@ baseClasses;
+
+
+
+
+
+(* =====================================================
+                    Internal functions
+   ===================================================== *)
+Clear[getInternalName];
+Attributes[getInternalName] = {HoldAllComplete};
+getInternalName[s_Symbol] := Symbol["OOP$" <> StringReplace[ToString[Hold[s]], "Hold["~~x__~~"]" :> x]];
+
+ Clear[callMember];
+ Attributes[callMember] = {HoldAll};
+ callMember[objName_Symbol, member_] :=
+    Module[
+        {},
+        objName[getInternalName[member]]
+    ]
+
+
+
+
+
 
 End[] (* End Private Context *)
 
