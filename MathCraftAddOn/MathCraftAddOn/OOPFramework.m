@@ -82,16 +82,23 @@ ClassNew::usage = ""
 ClassQ::usage = ""
 seperateLhsRhs::usage = ""
 getInternalName::usage = ""
-callMember::usage = ""
-(*define the operator . in the kernel level*)
+ClassCall::usage = ""
+(*
+    define the operator . in the kernel level,
+    This is just a temperary solution,
+    I really don't want to change the behavior of Dot[..],
+    Change it's attributes will cause some issue when doing Matrix stuff
+*)
 Unprotect[Dot];
-Dot[a_?((ObjectQ[#] || ClassQ[#])&), b_] := a[b];
+Dot[a_?((ObjectQ[#] || ClassQ[#])&), b_] := ClassCall[a, b];
 Dot[a_?((ObjectQ[#] || ClassQ[#])&), b_, c__] := Dot[a, b][c];
+AppendTo[Attributes[Dot], HoldAll];
 Protect[Dot]
 
 
 Class::SyntaxError = "Syntax Error in `1`"
 Begin["`Private`"] (* Begin Private Context *)
+
 
 (*
     set notation for member function call
@@ -109,6 +116,7 @@ RowBox[{"object_", "[", "member_", "]"}]]]
 $Class
 $Obj
 $Tag
+$Debug = True;
 (* ClassQ will return Ture for any class created by ClassDeclare
     or ClassNew
 *)
@@ -117,17 +125,23 @@ ObjectQ[a_] := a[$Tag] === $Obj;
 
 ClearAll[ClassDefine];
 Attributes[ClassDefine] = {HoldAllComplete};
-ClassDefine[className_,definition_] :=
+ClassDefine[className_, definition_] :=
     Module[
         {
             lhs,
             op,
-            rhs
+            rhs,
+            tmp = seperateLhsRhs[Hold[definition],"HoldQ"->True],
+            tmp2
         },
         (*seperate lhs and rhs*)
-        {lhs, op, rhs} = seperateLhsRhs[Hold[definition],"HoldQ"->True];
+        {lhs, op, rhs} = tmp;
+        tmp2 = First[tmp];
+        lhs = Replace[tmp, {a_, b__} :> getInternalName[a]];
+        lhs = ToExpression["Hold@"<>ToString[lhs]];
         (* should replace member data as a downvalue of the class*)
-        rhs = ReplaceAll[rhs, className[DataSet]];
+        rhs = ReplaceAll[rhs, className[$InternalNamesSet]];
+        rhs = ReplaceAll[rhs, className[$DataSet]];
         rhs = ReplaceAll[rhs, Verbatim[Hold][className[a__]] :> className[a]];
         className[First@lhs]=.;
         {Hold[className[First@lhs]], First@op, rhs}/.
@@ -157,35 +171,14 @@ ClassDeclare[
 $Object = Null;
 Clear[$Object];
 
-ClearAll[seperateLhsRhs];
-Options[seperateLhsRhs] = {"HoldQ" -> False};
-Attributes[seperateLhsRhs] = {HoldAllComplete};
-seperateLhsRhs[exp_, OptionsPattern[]] :=
-    Module[
-        {tmp = Hold[exp], result},
-        tmp = tmp /.Verbatim[Hold][a_Hold] :> a;
-        result =
-            Which[
-                !MatchQ[tmp, Verbatim[Hold][_Set | _SetDelayed]],
-                    {tmp, Hold[Null], Hold[Null]},
-                MatchQ[tmp, Verbatim[Hold][_Set]],
-                    Replace[tmp, Verbatim[Hold][Verbatim[Set][a_, b_]] :> {Hold[a], Hold[Set], Hold[b]}],
-                True,
-                    Replace[tmp, Verbatim[Hold][Verbatim[SetDelayed][a_, b_]] :> {Hold[a], Hold[SetDelayed], Hold[b]}]
-            ];
-        If[
-            OptionValue["HoldQ"],
-            result,
-            First /@ result
-        ]
-    ]
+
 
 ClearAll[ClassDeclare];
 Attributes[ClassDeclare] = {HoldAll};
 ClassDeclare[className_Symbol,fields___] := ClassDeclare[className <- $Object, fields];
 ClassDeclare[className_Symbol <- baseClass_, fields___] :=
     Module[
-        {dataSet, tmp = List@@(Hold /@ Hold[fields]), tmp2},
+        {dataSet, tmp = List@@(Hold /@ Hold[fields]), tmp2, tmp3},
         If[
             !MatchQ[baseClass, _Symbol|_List],
             Message[Class::SyntaxError, "ClassDeclare"];
@@ -194,12 +187,19 @@ ClassDeclare[className_Symbol <- baseClass_, fields___] :=
         ClearAll[className];
         (*Attributes[className] = {HoldAll};*)
         ClassInheritFrom[className, baseClass];
-        tmp2 = (First/@(seperateLhsRhs /@ tmp));
-        dataSet = (# -> Hold[className[#]])& /@ (*tmp2*)Select[tmp2,(Head[#] === Symbol) &];
+        tmp2 = (First/@(seperateLhsRhs[#, "HoldQ" -> True]& /@ tmp));
+        tmp3 = ToExpression["HoldPattern["~~#~~"]"]& /@
+                (Last[StringSplit[ToString[#], "OOP$"]]& /@
+                    (Switch[#, _Symbol, #, _, Head[#]]& /@ getInternalName/@ tmp2));
+(*        Print[tmp3];*)
+        className[$InternalNamesSet] = Thread[tmp3 -> Hold/@(getInternalName/@tmp3)];
+(*        Print[2];*)
+        tmp2 = getInternalName/@ tmp2;
+        dataSet = (Verbatim[Hold][#] -> Hold[className[#]])& /@ (*tmp2*)Select[tmp2,(Head[#] === Symbol) &];
         (* repeated (compare with inherit members) will be overwrite*)
         (className[#] :=
              Null)&/@ tmp2;
-        AppendTo[DownValues[className], HoldPattern[className[DataSet]] -> dataSet];
+        AppendTo[DownValues[className], HoldPattern[className[$DataSet]] -> dataSet];
         (*set a tag to specify that className is a class*)
         className[$Tag] := $Class;
         (* now, let's support initialization *)
@@ -236,7 +236,13 @@ ClassInheritFrom[className_, baseClass_] :=
 (* support multi-inheritance*)
 ClassInheritFrom[className_, baseClasses_List] := ClassInheritFrom[className, #]& /@ baseClasses;
 
-
+ Clear[ClassCall];
+ Attributes[ClassCall] = {HoldRest};
+ ClassCall[objName_Symbol, member_] :=
+    Module[
+        {},
+        objName[getInternalName[member]]
+    ]
 
 
 
@@ -245,19 +251,42 @@ ClassInheritFrom[className_, baseClasses_List] := ClassInheritFrom[className, #]
    ===================================================== *)
 Clear[getInternalName];
 Attributes[getInternalName] = {HoldAllComplete};
-getInternalName[s_Symbol] := Symbol["OOP$" <> StringReplace[ToString[Hold[s]], "Hold["~~x__~~"]" :> x]];
-
- Clear[callMember];
- Attributes[callMember] = {HoldAll};
- callMember[objName_Symbol, member_] :=
-    Module[
-        {},
-        objName[getInternalName[member]]
+getInternalName[s_] :=
+    If[
+        MatchQ[Hold[s], Verbatim[Hold][_Hold | _HoldPattern]],
+        ToExpression["OOP$" <> StringReplace[ToString[s], ("Hold"|"HoldPattern")~~"["~~x__~~"]" :> x]],
+        ToExpression["OOP$" <> StringReplace[ToString[Hold[s]], "Hold["~~x__~~"]" :> x]]
     ]
 
 
 
 
+
+
+ClearAll[seperateLhsRhs];
+Options[seperateLhsRhs] = {"HoldQ" -> False};
+Attributes[seperateLhsRhs] = {HoldAllComplete};
+seperateLhsRhs[exp_, OptionsPattern[]] :=
+    Module[
+        {tmp = Hold[exp], result},
+        tmp = tmp /.Verbatim[Hold][a_Hold] :> a;
+        result =
+            Which[
+                !MatchQ[tmp, Verbatim[Hold][_Set | _SetDelayed]],
+                    {tmp, Hold[Null], Hold[Null]},
+                MatchQ[tmp, Verbatim[Hold][_Set]],
+                    Replace[tmp, Verbatim[Hold][Verbatim[Set][a_, b_]] :> {Hold[a], Hold[Set], Hold[b]}],
+                True,
+                    Replace[tmp, Verbatim[Hold][Verbatim[SetDelayed][a_, b_]] :> {Hold[a], Hold[SetDelayed], Hold[b]}]
+            ];
+        If[
+            OptionValue["HoldQ"],
+            result,
+            First /@ result
+        ]
+    ]
+Options[printDebug] = {"Flag" -> True}
+printDebug[exp__, OptionsPattern[]] := If[$Debug === OptionValue["Flag"], Print[exp]];
 
 
 End[] (* End Private Context *)
