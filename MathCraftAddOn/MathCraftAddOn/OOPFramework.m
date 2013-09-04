@@ -12,6 +12,7 @@
         + conponent
         + tighter type check
         + keep the assignment same as type-in   DONE
+        + make the definition inside ClassDefine[] local DONE
 
     ISSUE:
         + How to make symbol intrduce in ClassDeclare[..] and ClassDefine[..] local?
@@ -131,12 +132,10 @@ ClassDefine[className_, definition_] :=
             lhs,
             op,
             rhs,
-            tmp = seperateLhsRhs[Hold[definition],"HoldQ"->True],
-            tmp2
+            tmp = seperateLhsRhs[Hold[definition],"HoldQ"->True]
         },
         (*seperate lhs and rhs*)
         {lhs, op, rhs} = tmp;
-        tmp2 = First[tmp];
         lhs = Replace[tmp, {a_, b__} :> getInternalName[a]];
         lhs = ToExpression["Hold@"<>ToString[lhs]];
         (* should replace member data as a downvalue of the class*)
@@ -189,7 +188,7 @@ ClassDeclare[className_Symbol <- baseClass_, fields___] :=
         ClassInheritFrom[className, baseClass];
         tmp2 = (First/@(seperateLhsRhs[#, "HoldQ" -> True]& /@ tmp));
         tmp3 = ToExpression["HoldPattern["~~#~~"]"]& /@
-                (Last[StringSplit[ToString[#], "OOP$"]]& /@
+                (Last[StringSplit[ToString[#], "OOPFramework$"]]& /@
                     (Switch[#, _Symbol, #, _, Head[#]]& /@ getInternalName/@ tmp2));
 (*        Print[tmp3];*)
         className[$InternalNamesSet] = Thread[tmp3 -> Hold/@(getInternalName/@tmp3)];
@@ -254,8 +253,8 @@ Attributes[getInternalName] = {HoldAllComplete};
 getInternalName[s_] :=
     If[
         MatchQ[Hold[s], Verbatim[Hold][_Hold | _HoldPattern]],
-        ToExpression["OOP$" <> StringReplace[ToString[s], ("Hold"|"HoldPattern")~~"["~~x__~~"]" :> x]],
-        ToExpression["OOP$" <> StringReplace[ToString[Hold[s]], "Hold["~~x__~~"]" :> x]]
+        ToExpression["OOPFramework$" <> StringReplace[ToString[s], ("Hold"|"HoldPattern")~~"["~~x__~~"]" :> x]],
+        ToExpression["OOPFramework$" <> StringReplace[ToString[Hold[s]], "Hold["~~x__~~"]" :> x]]
     ]
 
 
