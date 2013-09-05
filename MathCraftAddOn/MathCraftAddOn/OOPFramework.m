@@ -118,7 +118,7 @@ RowBox[{"object_", "[", "member_", "]"}]]]
 $Class
 $Obj
 $Tag
-$Debug = True;
+$Debug = False;
 (* ClassQ will return Ture for any class created by ClassDeclare
     or ClassNew
 *)
@@ -178,7 +178,7 @@ Attributes[ClassDeclare] = {HoldAll};
 ClassDeclare[className_Symbol,fields___] := ClassDeclare[className <- $Object, fields];
 ClassDeclare[className_Symbol <- baseClass_, fields___] :=
     Module[
-        {dataSet, tmp = List@@(Hold /@ Hold[fields]), tmp2, tmp3},
+        {dataSet, tmp = List@@(Hold /@ Hold[fields]), tmp2, tmp3, tmp4},
         If[
             !MatchQ[baseClass, _Symbol|_List],
             Message[Class::SyntaxError, "ClassDeclare"];
@@ -192,19 +192,30 @@ ClassDeclare[className_Symbol <- baseClass_, fields___] :=
                 (Last[StringSplit[ToString[#], "OOPFramework$"]]& /@
                     (Switch[#, _Symbol, #, _, Head[#]]& /@ getInternalName/@ tmp2));
 (*        Print[tmp3];*)
-        className[$InternalNamesSet] = Thread[tmp3 -> Hold/@(getInternalName/@tmp3)];
+        printDebug["className[$InternalNameSet]: ", className[$InternalNamesSet]];
+        If[
+            MatchQ[className[$InternalNamesSet], {__Rule}],
+            className[$InternalNamesSet] =
+                Union[Thread[tmp3 -> Hold/@(getInternalName/@tmp3)], className[$InternalNamesSet]],
+            className[$InternalNamesSet] = Thread[tmp3 -> Hold/@(getInternalName/@tmp3)]
+        ];
 (*        Print[2];*)
         tmp2 = getInternalName/@ tmp2;
         dataSet = (Verbatim[Hold][#] -> Hold[className[#]])& /@ (*tmp2*)Select[tmp2,(Head[#] === Symbol) &];
         (* repeated (compare with inherit members) will be overwrite*)
         (className[#] :=
              Null)&/@ tmp2;
+        If[
+            MatchQ[className[$DataSet], {__Rule}],
+            dataSet = Union[dataSet, className[$DataSet]]
+        ];
         AppendTo[DownValues[className], HoldPattern[className[$DataSet]] -> dataSet];
         (*set a tag to specify that className is a class*)
         className[$Tag] := $Class;
         (* now, let's support initialization *)
         tmp2 = Hold[ClassDefine[className, #]]& /@ Select[tmp, !FreeQ[#, _Set | _SetDelayed]&];
         tmp2 = Replace[tmp2,Verbatim[Hold][Verbatim[ClassDefine][a_,Verbatim[Hold][b_]]] :> ClassDefine[a,b],1];
+        DownValues[className] = DeleteDuplicates@DownValues[className];
     ];
 (*============================================================================
 *)
