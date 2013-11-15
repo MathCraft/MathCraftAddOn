@@ -3,7 +3,7 @@
 BeginPackage["MathCraftAddOn`",
 {
     "MathCraftAddOn`List`",
-    "MathCraftAddOn`TextUtilities`",
+    "MathCraftAddOn`Text`",
     "MathCraftAddOn`String`",
     "MathCraftAddOn`System`",
     "MathCraftAddOn`Timing`"
