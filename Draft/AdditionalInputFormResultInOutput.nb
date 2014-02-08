@@ -1,0 +1,532 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     18443,        523]
+NotebookOptionsPosition[     16612,        454]
+NotebookOutlinePosition[     17141,        477]
+CellTagsIndexPosition[     17056,        472]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"$entities", "=", 
+   RowBox[{"GeneralData", "[", 
+    RowBox[{"PeopleData", ",", "\"\<Entity\>\""}], "]"}]}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"data", "[", "0", "]"}], "=", 
+   RowBox[{"GeneralData", "[", 
+    RowBox[{"PeopleData", ",", 
+     RowBox[{"DataList", "@@", "$entities"}], ",", 
+     RowBox[{"DataList", "[", 
+      RowBox[{
+       RowBox[{"{", "\"\<StandardName\>\"", "}"}], ",", 
+       RowBox[{"{", "\"\<Name\>\"", "}"}], ",", 
+       RowBox[{"{", "\"\<BirthDate\>\"", "}"}]}], "]"}]}], "]"}]}], 
+  ";"}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"data", "[", "0", "]"}], "//", "Length"}]], "Input"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"224307"},
+    {
+     InterpretationBox[
+      StyleBox["224307",
+       ShowStringCharacters->True,
+       NumberMarks->True],
+      InputForm[224307],
+      AutoDelete->True,
+      Editable->True]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"data", "[", "0", "]"}], "//", "RandomChoice"}]], "Input"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     RowBox[{"{", 
+      RowBox[{"\<\"OlympicAthleteLisaCarringtonNewZealand\"\>", 
+       ",", "\<\"Lisa Carrington\"\>", ",", 
+       RowBox[{"AlphaDateObject", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"1989", ",", "6", ",", "23"}], "}"}], ",", 
+         RowBox[{"\<\"Calendar\"\>", "\[Rule]", "\<\"Gregorian\"\>"}]}], 
+        "]"}]}], "}"}]},
+    {
+     InterpretationBox[
+      StyleBox[
+       RowBox[{"{", 
+        RowBox[{
+        "\"\<OlympicAthleteLisaCarringtonNewZealand\>\"", ",", " ", 
+         "\"\<Lisa Carrington\>\"", ",", " ", 
+         RowBox[{"AlphaDateObject", "[", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"1989", ",", " ", "6", ",", " ", "23"}], "}"}], ",", " ", 
+           
+           RowBox[{
+           "\"\<Calendar\>\"", " ", "->", " ", "\"\<Gregorian\>\""}]}], 
+          "]"}]}], "}"}],
+       ShowStringCharacters->True,
+       NumberMarks->True],
+      InputForm[{
+       "OlympicAthleteLisaCarringtonNewZealand", "Lisa Carrington", 
+        CalculateParse`Content`Calculate`AlphaDateObject[{1989, 6, 23}, 
+         "Calendar" -> "Gregorian"]}],
+      AutoDelete->True,
+      Editable->True]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Unprotect", "[", "$Post", "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"$Post", "=."}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Protect", "[", "$Post", "]"}], ";"}]}], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"expr", "=", 
+  RowBox[{"{", 
+   RowBox[{
+   "1", ",", "\"\<1\>\"", ",", "foobar", ",", "\"\<foobar\>\"", ",", 
+    "\"\<\[EmptyCircle]\>\""}], "}"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+  "1", ",", "\<\"1\"\>", ",", "foobar", ",", "\<\"foobar\"\>", 
+   ",", "\<\"\[EmptyCircle]\"\>"}], "}"}]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ClearAll", "[", 
+   RowBox[{
+   "mengTurnOnAdditionalInputFormOutput", ",", " ", 
+    "mengTurnOffAdditionalInputFormOutput", ",", " ", 
+    "ShowAdditionalInputFormOutputQ"}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"Global`ShowAdditionalInputFormOutputQ", "=", "True"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "mengTurnOnAdditionalInputFormOutput", "]"}], "=", 
+   
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{"\"\<TestFunction\>\"", " ", "\[Rule]", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"FreeQ", "[", 
+         RowBox[{"#", ",", "_String"}], "]"}]}], "&"}], ")"}]}], 
+    "\[IndentingNewLine]", "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"mengTurnOnAdditionalInputFormOutput", "[", 
+     RowBox[{"OptionsPattern", "[", "]"}], "]"}], " ", ":=", " ", 
+    RowBox[{"Module", "[", "\n", "\t", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"test", " ", "=", " ", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"!", 
+           RowBox[{"FreeQ", "[", 
+            RowBox[{"#", ",", "_String"}], "]"}]}], "&"}], ")"}]}], 
+       RowBox[{"(*", 
+        RowBox[{"OptionValue", "[", "\"\<TestFunction\>\"", "]"}], "*)"}], 
+       "}"}], ",", "\[IndentingNewLine]", "\t", 
+      RowBox[{
+       RowBox[{"Unprotect", "[", "$Post", "]"}], ";", "\[IndentingNewLine]", 
+       "\t", 
+       RowBox[{"$Post", " ", "=", " ", 
+        RowBox[{
+         RowBox[{"If", "[", "\n", "\t\t", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+            "TrueQ", "[", "Global`ShowAdditionalInputFormOutputQ", "]"}], " ",
+             "&&", " ", 
+            RowBox[{"TrueQ", "[", 
+             RowBox[{"test", "[", "#", "]"}], "]"}]}], ",", "\n", "\t\t", 
+           RowBox[{"With", "[", "\n", "\t\t\t", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"displayed", "=", 
+               RowBox[{"OpenerView", "[", 
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"#", ",", " ", 
+                   RowBox[{"Style", "[", 
+                    RowBox[{
+                    RowBox[{"Column", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    RowBox[{"Style", "[", 
+                    RowBox[{"\"\<InputForm:\>\"", ",", " ", "LightRed"}], 
+                    "]"}], ",", " ", 
+                    RowBox[{"ToString", "[", 
+                    RowBox[{"#", ",", "InputForm", ",", 
+                    RowBox[{
+                    "CharacterEncoding", "\[Rule]", " ", "\"\<ASCII\>\""}]}], 
+                    "]"}]}], "}"}], "]"}], ",", " ", 
+                    RowBox[{"FontColor", "\[Rule]", " ", "Gray"}]}], "]"}]}], 
+                  "}"}], ",", " ", "True"}], "]"}]}], "}"}], ",", "\n", 
+             "\t\t\t", 
+             RowBox[{"Interpretation", "[", 
+              RowBox[{"#", ",", " ", "displayed"}], "]"}]}], "\n", "\t\t", 
+            "]"}], ",", " ", "\n", "\t\t", "#"}], "\n", "\t", "]"}], "&"}]}], 
+       ";", "\[IndentingNewLine]", "\t", 
+       RowBox[{"Protect", "[", "$Post", "]"}], ";"}]}], "\n", "]"}]}], ";"}], 
+  "\n"}], "\n", 
+ RowBox[{
+  RowBox[{"mengTurnOffAdditionalInputFormOutput", "[", "]"}], " ", ":=", " ", 
+  
+  RowBox[{"(", "\[IndentingNewLine]", "\t", 
+   RowBox[{
+    RowBox[{"Unprotect", "[", "$Post", "]"}], ";", "\[IndentingNewLine]", 
+    "\t", 
+    RowBox[{"$Post", "=."}], ";", "\[IndentingNewLine]", "\t", 
+    RowBox[{"Protect", "[", "$Post", "]"}], ";"}], "\n", ")"}]}]}], "Code"],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"OptionValue", "::", "optnf"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Option name \[NoBreak]\\!\\(\\\"TestFunction\\\"\\)\
+\[NoBreak] not found in defaults for \
+\[NoBreak]\\!\\(mengTurnOnAdditionalInputFormOutput\\)\[NoBreak]. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/OptionValue\\\", ButtonNote -> \
+\\\"OptionValue::optnf\\\"]\\)\"\>"}]], "Message", "MSG"],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"OptionValue", "::", "optnf"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Option name \[NoBreak]\\!\\(\\\"TestFunction\\\"\\)\
+\[NoBreak] not found in defaults for \
+\[NoBreak]\\!\\(mengTurnOnAdditionalInputFormOutput\\)\[NoBreak]. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/OptionValue\\\", ButtonNote -> \
+\\\"OptionValue::optnf\\\"]\\)\"\>"}]], "Message", "MSG"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"mengTurnOffAdditionalInputFormOutput", "[", "]"}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["123"], "Input"],
+
+Cell[BoxData["123"], "Output"]
+}, Open  ]],
+
+Cell[BoxData["SetFrontEndOptions"], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"?", "ShowStringCharactersN"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox["\<\"ShowStringCharacters is an option for Cell that specifies \
+whether to display \\\" when a string is entered. \"\>", "MSG"], 
+  "\[NonBreakingSpace]", 
+  ButtonBox[
+   StyleBox["\[RightSkeleton]", "SR"],
+   Active->True,
+   BaseStyle->"Link",
+   ButtonData->"paclet:ref/ShowStringCharacters"]}]], "Print", "PrintUsage",
+ CellTags->"Info3595943502-9132875"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"ShowStringCharacters", "\[Rule]", "True"}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["expr"], "Input"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"{", 
+   RowBox[{
+   "1", ",", "\<\"1\"\>", ",", "foobar", ",", "\<\"foobar\"\>", 
+    ",", "\<\"\[EmptyCircle]\"\>"}], "}"}],
+  OpenerView[{{1, "1", $CellContext`foobar, "foobar", "\[EmptyCircle]"}, 
+    Style[
+     Column[{
+       Style["InputForm:", 
+        RGBColor[1, 0.85, 0.85]], 
+       "{1, \"1\", foobar, \"foobar\", \"\\[EmptyCircle]\"}"}], FontColor -> 
+     GrayLevel[0.5]]}, True]]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Plot", "[", 
+  RowBox[{
+   RowBox[{"Sin", "[", "x", "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "1", ",", "2"}], "}"}]}], "]"}]], "Input"],
+
+Cell[BoxData[
+ GraphicsBox[{{}, {}, 
+   {Hue[0.67, 0.6, 0.6], LineBox[CompressedData["
+1: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
+     "]]}},
+  AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+  Axes->True,
+  AxesLabel->{None, None},
+  AxesOrigin->{1., 0.84},
+  BaseStyle->{CellBaseline -> Baseline},
+  FrameTicksStyle->Directive[FontFamily -> "Times", FontSize -> 10],
+  LabelStyle->{FontFamily -> "Verdana", FontSize -> 10},
+  Method->{},
+  PlotRange->{{1, 2}, {0.8414709958344739, 0.9999999905967447}},
+  PlotRangeClipping->True,
+  PlotRangePadding->{
+    Scaled[0.02], 
+    Scaled[0.02]},
+  Prolog->{
+    Opacity[0], 
+    TagBox[
+     RectangleBox[
+      Scaled[{0, 0}], 
+      Scaled[{1, 1}]], Annotation[#, "Plot", "Frame"]& ]},
+  TicksStyle->Directive[FontFamily -> "Times", FontSize -> 10]]], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"mengTurnOnAdditionalInputFormOutput", "[", "]"}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["123"], "Input"],
+
+Cell[BoxData["123"], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["expr"], "Input"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"{", 
+   RowBox[{
+   "1", ",", "\<\"1\"\>", ",", "foobar", ",", "\<\"foobar\"\>", 
+    ",", "\<\"\[EmptyCircle]\"\>"}], "}"}],
+  OpenerView[{{1, "1", $CellContext`foobar, "foobar", "\[EmptyCircle]"}, 
+    Style[
+     Column[{
+       Style["InputForm:", 
+        RGBColor[1, 0.85, 0.85]], 
+       "{1, \"1\", foobar, \"foobar\", \"\\[EmptyCircle]\"}"}], FontColor -> 
+     GrayLevel[0.5]]}, True]]], "Output"]
+}, Open  ]]
+},
+WindowSize->{1440, 852},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+ShowSelection->True,
+FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (January 25, \
+2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{
+ "Info3595943502-9132875"->{
+  Cell[8782, 271, 396, 10, 42, "Print",
+   CellTags->"Info3595943502-9132875"]}
+ }
+*)
+(*CellTagsIndex
+CellTagsIndex->{
+ {"Info3595943502-9132875", 16952, 466}
+ }
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 161, 4, 28, "Input"],
+Cell[721, 26, 432, 12, 28, "Input"],
+Cell[CellGroupData[{
+Cell[1178, 42, 86, 2, 28, "Input"],
+Cell[1267, 46, 419, 15, 47, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1723, 66, 92, 2, 28, "Input"],
+Cell[1818, 70, 1394, 39, 47, "Output"]
+}, Open  ]],
+Cell[3227, 112, 237, 6, 63, "Input"],
+Cell[CellGroupData[{
+Cell[3489, 122, 185, 5, 28, "Input"],
+Cell[3677, 129, 157, 4, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3871, 138, 3576, 89, 411, "Code"],
+Cell[7450, 229, 496, 10, 24, "Message"],
+Cell[7949, 241, 496, 10, 24, "Message"]
+}, Open  ]],
+Cell[8460, 254, 84, 1, 28, "Input"],
+Cell[CellGroupData[{
+Cell[8569, 259, 29, 0, 28, "Input"],
+Cell[8601, 261, 30, 0, 28, "Output"]
+}, Open  ]],
+Cell[8646, 264, 44, 0, 28, "Input"],
+Cell[CellGroupData[{
+Cell[8715, 268, 64, 1, 28, "Input"],
+Cell[8782, 271, 396, 10, 42, "Print",
+ CellTags->"Info3595943502-9132875"]
+}, Open  ]],
+Cell[9193, 284, 77, 1, 28, "Input"],
+Cell[CellGroupData[{
+Cell[9295, 289, 30, 0, 28, "Input"],
+Cell[9328, 291, 452, 12, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9817, 308, 170, 5, 28, "Input"],
+Cell[9990, 315, 5899, 107, 240, "Output"]
+}, Open  ]],
+Cell[15904, 425, 83, 1, 28, "Input"],
+Cell[CellGroupData[{
+Cell[16012, 430, 29, 0, 28, "Input"],
+Cell[16044, 432, 30, 0, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[16111, 437, 30, 0, 28, "Input"],
+Cell[16144, 439, 452, 12, 28, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
