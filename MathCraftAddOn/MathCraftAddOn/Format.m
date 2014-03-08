@@ -1,5 +1,5 @@
 BeginPackage["MathCraftAddOn`Formatting`"]
-Needs["MathCraftAddOn`Formatting`"]
+Needs["MathCraftAddOn`System`"]
 
 
 
