@@ -1,0 +1,322 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='WolframDesktop 10.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       161,          7]
+NotebookDataLength[      9842,        313]
+NotebookOptionsPosition[      9076,        284]
+NotebookOutlinePosition[      9456,        301]
+CellTagsIndexPosition[      9413,        298]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["MathCraft polyhedron", "Title"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"rsol", "=", 
+   RowBox[{"r", "/.", 
+    RowBox[{"Solve", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"r", " ", "a"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"2", "/", "3"}], ")"}]}], "+", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"r", " ", "b"}], ")"}], "^", 
+          RowBox[{"(", 
+           RowBox[{"2", "/", "3"}], ")"}]}]}], "\[Equal]", "1"}], "}"}], ",", 
+      "r"}], "]"}]}]}], ";"}], "\n", 
+ RowBox[{"rconv", "=", 
+  RowBox[{"rsol", "/.", 
+   RowBox[{"Thread", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a", ",", "b"}], "}"}], "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"1", "+", 
+          RowBox[{"Sqrt", "[", 
+           RowBox[{"Abs", "[", 
+            RowBox[{
+             RowBox[{"2", " ", 
+              RowBox[{"R", "^", "2"}]}], "-", "1"}], "]"}], "]"}]}], ")"}], 
+        "/", 
+        RowBox[{"(", 
+         RowBox[{"2", " ", "R"}], ")"}]}], ",", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          RowBox[{"Sqrt", "[", 
+           RowBox[{"Abs", "[", 
+            RowBox[{
+             RowBox[{"2", " ", 
+              RowBox[{"R", "^", "2"}]}], "-", "1"}], "]"}], "]"}]}], ")"}], 
+        "/", 
+        RowBox[{"(", 
+         RowBox[{"2", " ", "R"}], ")"}]}]}], "}"}]}], "]"}]}]}], "\n", 
+ RowBox[{"rcomp", "=", 
+  RowBox[{"Compile", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"{", 
+      RowBox[{"R", ",", "_Real"}], "}"}], "}"}], ",", 
+    RowBox[{"Evaluate", "[", 
+     RowBox[{"rconv", "[", 
+      RowBox[{"[", "2", "]"}], "]"}], "]"}], ",", 
+    RowBox[{"CompilationTarget", "\[Rule]", "\"\<C\>\""}], ",", 
+    RowBox[{"RuntimeOptions", "\[Rule]", "\"\<Speed\>\""}]}], 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{{3.603248226229189*^9, 3.603248226230235*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"rR", "[", 
+    RowBox[{"r_", "/;", 
+     RowBox[{
+      RowBox[{"Abs", "[", 
+       RowBox[{"r", "-", "1"}], "]"}], "<", "0.001"}]}], "]"}], ":=", "1.0"}],
+   ";"}], "\n", 
+ RowBox[{
+  RowBox[{"rR", "[", 
+   RowBox[{"r_", "/;", 
+    RowBox[{
+     RowBox[{"Abs", "[", 
+      RowBox[{"r", "-", 
+       RowBox[{"1", "/", 
+        RowBox[{"\[Sqrt]", "2"}]}]}], "]"}], "<", "0.001"}]}], "]"}], ":=", 
+  "0.5"}], "\n", 
+ RowBox[{
+  RowBox[{"rR", "[", 
+   RowBox[{"r_", "?", "NumericQ"}], "]"}], ":=", 
+  RowBox[{"rcomp", "[", "r", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.603248237869842*^9, 3.6032482378714046`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"hyperbolicize", "[", "cR_", "]"}], "[", "p_", "]"}], ":=", 
+  RowBox[{"p", "/.", 
+   RowBox[{
+    RowBox[{"Polygon", "[", "x_", "]"}], "\[RuleDelayed]", 
+    RowBox[{"Polygon", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{
+        RowBox[{"#", "/", 
+         RowBox[{"Norm", "[", "#", "]"}]}], " ", 
+        RowBox[{"rR", "[", 
+         RowBox[{
+          RowBox[{"Norm", "[", "#", "]"}], "/", "cR"}], "]"}]}], "&"}], "/@", 
+      
+      RowBox[{"N", "[", "x", "]"}]}], "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.603248248360717*^9, 3.603248248361931*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"facebreak", "[", "p_", "]"}], ":=", 
+   RowBox[{"p", "/.", 
+    RowBox[{
+     RowBox[{"Polygon", "[", "x_", "]"}], "\[RuleDelayed]", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"Polygon", "[", 
+         RowBox[{"Append", "[", 
+          RowBox[{"#", ",", 
+           RowBox[{"Mean", "[", "x", "]"}]}], "]"}], "]"}], "&"}], ")"}], "/@", 
+      RowBox[{"Partition", "[", 
+       RowBox[{
+        RowBox[{"Append", "[", 
+         RowBox[{"x", ",", 
+          RowBox[{"First", "[", "x", "]"}]}], "]"}], ",", "2", ",", "1"}], 
+       "]"}]}]}]}]}], "\n"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"edgebreak", "[", "p_", "]"}], ":=", 
+   RowBox[{"p", "/.", 
+    RowBox[{
+     RowBox[{"Polygon", "[", "x_", "]"}], "\[RuleDelayed]", 
+     RowBox[{"Polygon", "/@", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Append", "[", 
+          RowBox[{
+           RowBox[{"Partition", "[", 
+            RowBox[{
+             RowBox[{"RotateRight", "[", 
+              RowBox[{"Riffle", "[", 
+               RowBox[{"x", ",", "#"}], "]"}], "]"}], ",", "3", ",", "2", ",",
+              "1"}], "]"}], ",", "#"}], "]"}], "&"}], "[", 
+        RowBox[{"Mean", "/@", 
+         RowBox[{"Partition", "[", 
+          RowBox[{"x", ",", "1", ",", "1", ",", "1"}], "]"}]}], "]"}], 
+       ")"}]}]}]}]}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{"g", "=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"poly", "=", "\"\<Dodecahedron\>\""}], "}"}], ",", 
+    RowBox[{"Graphics3D", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"hyperbolicize", "[", 
+         RowBox[{"PolyhedronData", "[", 
+          RowBox[{"poly", ",", "\"\<Circumradius\>\""}], "]"}], "]"}], "@", 
+        RowBox[{"Nest", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"edgebreak", "@", 
+            RowBox[{"facebreak", "@", "#"}]}], "&"}], ",", 
+          RowBox[{"Normal", "@", 
+           RowBox[{"PolyhedronData", "[", 
+            RowBox[{"poly", ",", "\"\<Faces\>\""}], "]"}]}], ",", "2"}], 
+         "]"}]}], "}"}], ",", 
+      RowBox[{"Boxed", "\[Rule]", "False"}], ",", 
+      RowBox[{"Background", "\[Rule]", " ", "None"}], ",", 
+      RowBox[{"ImageSize", "\[Rule]", " ", "600"}]}], "]"}]}], 
+   "]"}]}]}], "Input",
+ CellChangeTimes->CompressedData["
+1:eJxTTMoPSmViYGAQBmIQ3SI7f8KyG68cv6hA6HsM1k9BdNLp8jcgOqTw0S8Q
+LaJi+htEN81c8x9ET3W9w7ocSP94/54LRPtkL+EG0VtdzIVAtLaxDZgOKCqT
+BtH6SyeDacmnh+VBdIFIugKIvvNIVw9ET9tToA+iZUR3rAPRAn4W60F0k9bE
+tyA67e0CMJ1Tfo9lBZCWPmHNAaLrNOo0QPS8qA4wLbxyhS2INtq+xh5EL/q4
+zRlEd8REuILo6Mod3iDaNsUvGkRfkktJAtFfCp5ng+i2ebLNYPlt08H0C69z
+1jtA/rhraQ+iAWErrNg=
+  "]],
+
+Cell[BoxData[{
+ RowBox[{"$MathCraftLogo", "=", 
+  RowBox[{"ImageCrop", "[", "g", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{"ToFileName", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"NotebookDirectory", "[", "]"}], "}"}], ",", 
+     "\"\<mathcraft_polyhedron_cropped.png\>\""}], "]"}], ",", 
+   "$MathCraftLogo", ",", 
+   RowBox[{"Background", "\[Rule]", " ", "None"}]}], "]"}]}], "Input"],
+
+Cell[BoxData[
+ RowBox[{"$MathCraftLogo135", "=", 
+  RowBox[{"ImageResize", "[", 
+   RowBox[{
+    RowBox[{"Show", "[", 
+     RowBox[{
+      RowBox[{"{", "$MathCraftLogo", "}"}], ",", 
+      RowBox[{"ImagePadding", "\[Rule]", " ", "50"}], ",", 
+      RowBox[{"Background", "\[Rule]", " ", "None"}]}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"135", ",", "135"}], "}"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"$MathCraftLogo350", "=", 
+  RowBox[{"ImageResize", "[", 
+   RowBox[{
+    RowBox[{"Show", "[", 
+     RowBox[{
+      RowBox[{"{", "$MathCraftLogo", "}"}], ",", 
+      RowBox[{"ImagePadding", "\[Rule]", " ", "50"}], ",", 
+      RowBox[{"Background", "\[Rule]", " ", "None"}]}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"350", ",", "350"}], "}"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"imageSize", "[", "image_", "]"}], ":=", 
+  RowBox[{"Replace", "[", 
+   RowBox[{
+    RowBox[{"Max", "@", 
+     RowBox[{"ImageDimensions", "[", "$MathCraftLogo", "]"}]}], ",", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"x_", "?", "NumericQ"}], "\[RuleDelayed]", " ", 
+       RowBox[{"\"\<_\>\"", "<>", 
+        RowBox[{"ToString", "[", 
+         RowBox[{"Round", "[", "x", "]"}], "]"}], "<>", "\"\<px\>\""}]}], ",", 
+      RowBox[{"_", "\[Rule]", " ", "\"\<\>\""}]}], "}"}]}], "]"}]}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"imageSize", "[", "$MathCraftLogo350", "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"$MathCraftLogo", "=", "$MathCraftLogo350"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"Export", "[", 
+  RowBox[{
+   RowBox[{"ToFileName", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"NotebookDirectory", "[", "]"}], "}"}], ",", 
+     RowBox[{"\"\<mathcraft_polyhedron_\>\"", "<>", 
+      RowBox[{"imageSize", "[", "$MathCraftLogo", "]"}], "<>", 
+      "\"\<.png\>\""}]}], "]"}], ",", "$MathCraftLogo", ",", 
+   RowBox[{"Background", "\[Rule]", " ", "None"}]}], "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"SystemOpen", "[", "%", "]"}]], "Input",
+ CellChangeTimes->{{3.60325108260408*^9, 3.6032510858168993`*^9}}]
+}, Open  ]]
+},
+WindowSize->{1920, 1036},
+WindowMargins->{{1440, Automatic}, {Automatic, 0}},
+ShowSelection->True,
+FrontEndVersion->"9.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (January 25, \
+2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[583, 22, 37, 0, 92, "Title"],
+Cell[623, 24, 1949, 62, 63, "Input"],
+Cell[2575, 88, 660, 22, 68, "Input"],
+Cell[3238, 112, 610, 18, 28, "Input"],
+Cell[3851, 132, 2714, 74, 97, "Input"],
+Cell[6568, 208, 434, 11, 46, "Input"],
+Cell[7005, 221, 391, 10, 28, "Input"],
+Cell[7399, 233, 391, 10, 28, "Input"],
+Cell[7793, 245, 548, 14, 28, "Input"],
+Cell[8344, 261, 78, 1, 28, "Input"],
+Cell[8425, 264, 78, 1, 28, "Input"],
+Cell[8506, 267, 421, 10, 28, "Input"],
+Cell[8930, 279, 130, 2, 28, "Input"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
