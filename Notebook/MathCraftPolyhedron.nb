@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       161,          7]
-NotebookDataLength[      9842,        313]
-NotebookOptionsPosition[      9076,        284]
-NotebookOutlinePosition[      9456,        301]
-CellTagsIndexPosition[      9413,        298]
+NotebookDataLength[     10304,        330]
+NotebookOptionsPosition[      9429,        297]
+NotebookOutlinePosition[      9809,        314]
+CellTagsIndexPosition[      9766,        311]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -279,7 +279,20 @@ Cell[BoxData[
 
 Cell[BoxData[
  RowBox[{"SystemOpen", "[", "%", "]"}]], "Input",
- CellChangeTimes->{{3.60325108260408*^9, 3.6032510858168993`*^9}}]
+ CellChangeTimes->{{3.60325108260408*^9, 3.6032510858168993`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["References", "Section"],
+
+Cell[TextData[ButtonBox["How to name/call this polyhedron?",
+ BaseStyle->"Hyperlink",
+ ButtonData->{
+   FrontEnd`FileName[{
+    " http:", "", "math.stackexchange.com", "questions", "704301"}, 
+    "how-to-name-call-this-polyhedron", CharacterEncoding -> "UTF-8"], 
+   None}]], "Item"]
+}, Open  ]]
 }, Open  ]]
 },
 WindowSize->{1920, 1036},
@@ -313,7 +326,11 @@ Cell[7793, 245, 548, 14, 28, "Input"],
 Cell[8344, 261, 78, 1, 28, "Input"],
 Cell[8425, 264, 78, 1, 28, "Input"],
 Cell[8506, 267, 421, 10, 28, "Input"],
-Cell[8930, 279, 130, 2, 28, "Input"]
+Cell[8930, 279, 130, 2, 28, "Input"],
+Cell[CellGroupData[{
+Cell[9085, 285, 29, 0, 80, "Section"],
+Cell[9117, 287, 284, 6, 28, "Item"]
+}, Open  ]]
 }, Open  ]]
 }
 ]
