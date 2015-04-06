@@ -2,6 +2,7 @@
 
 BeginPackage["MathCraftAddOn`",
 {
+    "MathCraftAddOn`HTML`",
     "MathCraftAddOn`List`",
     "MathCraftAddOn`Text`",
     "MathCraftAddOn`String`",
